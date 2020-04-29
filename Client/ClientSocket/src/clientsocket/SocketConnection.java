@@ -11,6 +11,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 /**
  *
  * @author Ro7Rinke
@@ -35,6 +42,27 @@ public class SocketConnection {
     String retorno = client.echo(message);
     System.out.println("Recebendo: " + retorno);
     client.socket.close();
+    Crypt crypt = new Crypt();
+        try {
+            crypt.GenerateKeysRSA();
+            byte[] test = crypt.encrypt("test");
+            System.out.println(test);
+            String txt = crypt.decrypt(test);
+            System.out.println(txt);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
   }
  
   // realiza a conexão com o socket
