@@ -33,36 +33,40 @@ public class SocketConnection {
     // conexão socket tcp
     String ip = "192.168.0.35";
     int port = 3000;
-    client.socketConnect(ip, port);
+    //client.socketConnect(ip, port);
  
     // escreve e recebe mensagem 
-    String message = "mensagem123";
+    //String message = "mensagem123";
  
-    System.out.println("Enviando: " + message);
-    String retorno = client.echo(message);
-    System.out.println("Recebendo: " + retorno);
-    client.socket.close();
+    //System.out.println("Enviando: " + message);
+    //String retorno = client.echo(message);
+    //System.out.println("Recebendo: " + retorno);
+    //client.socket.close();
     Crypt crypt = new Crypt();
+    if("rsa".equals(args[0])){
         try {
-            crypt.GenerateKeysRSA();
+            long stTime = System.currentTimeMillis();
+            crypt.GenerateKeysRSA(Integer.parseInt(args[1]));
             byte[] test = crypt.encrypt("test");
-            System.out.println(test);
+            long useMemoryCrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+            long usedTimeCrypt = (System.currentTimeMillis() - stTime);
             String txt = crypt.decrypt(test);
-            System.out.println(txt);
+            long useMemoryDecrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+            long usedTimeDecrypt = (System.currentTimeMillis() - stTime);
+            WriteRead.Write("rsa-useMemoryCrypt-" + args[2], Long.toString(useMemoryCrypt));
+            WriteRead.Write("rsa-useMemoryDecrypt-" + args[2], Long.toString(useMemoryDecrypt));
+            WriteRead.Write("rsa-usedTimeCrypt-" + args[2], Long.toString(usedTimeCrypt));
+            WriteRead.Write("rsa-usedTimeDecrypt-" + args[2], Long.toString(usedTimeDecrypt));
+            System.out.println(useMemoryCrypt / 1024);
+            System.out.println(useMemoryDecrypt / 1024);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
-            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
+        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException ex) {
             Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+    }
   }
  
   // realiza a conexão com o socket

@@ -20,9 +20,9 @@ public class Crypt {
     private PrivateKey privateKey;
     private PublicKey publicKey;
     
-    public void GenerateKeysRSA () throws NoSuchAlgorithmException {
+    public void GenerateKeysRSA (int size) throws NoSuchAlgorithmException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(1024);
+        keyGen.initialize(size);
         KeyPair keys = keyGen.generateKeyPair();
         this.privateKey = keys.getPrivate();
         this.publicKey = keys.getPublic();
