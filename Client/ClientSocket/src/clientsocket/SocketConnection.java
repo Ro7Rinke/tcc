@@ -53,12 +53,10 @@ public class SocketConnection {
             String txt = crypt.decrypt(test);
             long useMemoryDecrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
             long usedTimeDecrypt = (System.currentTimeMillis() - stTime);
-            WriteRead.Write("rsa-useMemoryCrypt-" + args[2], Long.toString(useMemoryCrypt));
-            WriteRead.Write("rsa-useMemoryDecrypt-" + args[2], Long.toString(useMemoryDecrypt));
-            WriteRead.Write("rsa-usedTimeCrypt-" + args[2], Long.toString(usedTimeCrypt));
-            WriteRead.Write("rsa-usedTimeDecrypt-" + args[2], Long.toString(usedTimeDecrypt));
-            System.out.println(useMemoryCrypt / 1024);
-            System.out.println(useMemoryDecrypt / 1024);
+            WriteRead.Write("rsa-" + args[1] + "-useMemoryCrypt-" + args[2], Long.toString(useMemoryCrypt));
+            WriteRead.Write("rsa-" + args[1] + "-useMemoryDecrypt-" + args[2], Long.toString(useMemoryDecrypt));
+            WriteRead.Write("rsa-" + args[1] + "-usedTimeCrypt-" + args[2], Long.toString(usedTimeCrypt));
+            WriteRead.Write("rsa-" + args[1] + "-usedTimeDecrypt-" + args[2], Long.toString(usedTimeDecrypt));
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException ex) {
