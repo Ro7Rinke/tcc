@@ -11,13 +11,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 /**
  *
  * @author Ro7Rinke
@@ -27,9 +22,11 @@ public class SocketConnection {
  
   public static void main(String[] args) throws UnknownHostException, 
   IOException, ClassNotFoundException {
+      
+    String data = WriteRead.Read("../strings/" + args[0] + ".dat");
+      
     // instancia classe
-    SocketConnection client = new SocketConnection();
- 
+    //SocketConnection client = new SocketConnection();
     // conexão socket tcp
     String ip = "192.168.0.35";
     int port = 3000;
@@ -42,31 +39,33 @@ public class SocketConnection {
     //String retorno = client.echo(message);
     //System.out.println("Recebendo: " + retorno);
     //client.socket.close();
+    long startUseMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
     Crypt crypt = new Crypt();
-    if("rsa".equals(args[0])){
-        try {
-            long stTime = System.currentTimeMillis();
-            crypt.GenerateKeysRSA(Integer.parseInt(args[1]));
-            byte[] test = crypt.encrypt("test");
-            long useMemoryCrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
-            long usedTimeCrypt = (System.currentTimeMillis() - stTime);
-            String txt = crypt.decrypt(test);
-            long useMemoryDecrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
-            long usedTimeDecrypt = (System.currentTimeMillis() - stTime);
-            WriteRead.Write("rsa-" + args[1] + "-useMemoryCrypt-" + args[2], Long.toString(useMemoryCrypt));
-            WriteRead.Write("rsa-" + args[1] + "-useMemoryDecrypt-" + args[2], Long.toString(useMemoryDecrypt));
-            WriteRead.Write("rsa-" + args[1] + "-usedTimeCrypt-" + args[2], Long.toString(usedTimeCrypt));
-            WriteRead.Write("rsa-" + args[1] + "-usedTimeDecrypt-" + args[2], Long.toString(usedTimeDecrypt));
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException ex) {
-            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    switch(args[1]){
+//        case "rsa":
+            try {
+                long stTime = System.currentTimeMillis();
+                crypt.startKeys(args[1], Integer.parseInt(args[2]));
+                long usedTimeKey = (System.currentTimeMillis() - stTime);
+                byte[] cryptData = crypt.selectEncrypt(args[1], data);
+                long useMemoryCrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) - startUseMemory;
+                long usedTimeCrypt = (System.currentTimeMillis() - stTime);
+                String txt = crypt.selectDecrypt(args[1], cryptData);
+                long useMemoryDecrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) - startUseMemory;
+                long usedTimeDecrypt = (System.currentTimeMillis() - stTime);
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useTotalMemory-" + args[3] + ".dat", Long.toString( startUseMemory ));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeKey-" + args[3] + ".dat", Long.toString( usedTimeKey ));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-sizeCrypt-" + args[3] + ".dat", Integer.toString(cryptData.length));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useMemoryCrypt-" + args[3] + ".dat", Long.toString(useMemoryCrypt));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useMemoryDecrypt-" + args[3] + ".dat", Long.toString(useMemoryDecrypt));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeCrypt-" + args[3] + ".dat", Long.toString(usedTimeCrypt));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeDecrypt-" + args[3] + ".dat", Long.toString(usedTimeDecrypt));
+            } catch (NumberFormatException ex) {
+                Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+//            break;
+//    }
   }
- 
   // realiza a conexão com o socket
   private void socketConnect(String ip, int port) throws UnknownHostException, IOException {
     System.out.println("[Conectando socket...]");

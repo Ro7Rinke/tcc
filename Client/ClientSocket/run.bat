@@ -1,21 +1,2 @@
-cd ./data
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 1
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 2
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 3
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 4
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 5
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 6
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 7
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 8
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 9
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 10
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 11
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 12
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 13
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 14
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 15
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 16
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 17
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 18
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 19
-start /b java -jar "../dist/ClientSocket.jar" rsa 1024 20
+node ./generateResults.js
+pause
