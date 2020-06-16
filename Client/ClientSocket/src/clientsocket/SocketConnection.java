@@ -23,6 +23,8 @@ public class SocketConnection {
   public static void main(String[] args) throws UnknownHostException, 
   IOException, ClassNotFoundException {
       
+      
+      
     String data = WriteRead.Read("../strings/" + args[0] + ".dat");
       
     // instancia classe
@@ -55,7 +57,7 @@ public class SocketConnection {
                 long usedTimeDecrypt = (System.currentTimeMillis() - stTime);
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useTotalMemory-" + args[3] + ".dat", Long.toString( startUseMemory ));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeKey-" + args[3] + ".dat", Long.toString( usedTimeKey ));
-                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-sizeCrypt-" + args[3] + ".dat", Integer.toString(cryptData.length));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-sizeCrypt-" + args[3] + ".dat", Integer.toString(cryptData.length - (data.getBytes().length)));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useMemoryCrypt-" + args[3] + ".dat", Long.toString(useMemoryCrypt));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useMemoryDecrypt-" + args[3] + ".dat", Long.toString(useMemoryDecrypt));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeCrypt-" + args[3] + ".dat", Long.toString(usedTimeCrypt));

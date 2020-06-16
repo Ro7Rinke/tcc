@@ -1,2 +1,2 @@
-/Client/ClientSocket/dist/
 /Client/ClientSocket/data/*
+!/Client/ClientSocket/data/.gitkeep
