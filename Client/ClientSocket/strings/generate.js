@@ -6,7 +6,7 @@ const randomChar = () => {
 }
 
 let str = ""
-while(str.length < 512/8){
+while(str.length < 512){
     str = str + String.fromCharCode(randomChar())
 }
 fs.writeFile('rsa.dat', str, 'utf8', (error) => {

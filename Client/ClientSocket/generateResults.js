@@ -7,26 +7,26 @@ let params = [
     //     algorithm: 'rsa',//nome do algoritmo
     //     key: 1024,//tamanho da chave
     //     data: 'rsa',//nome do arquivo q contem a string a ser criptografada
+    //     run: 1,//quantidade de vezes q sera executado a criptografia e o resultado sera a media
+    // },
+    // {
+    //     algorithm: 'rsa',//nome do algoritmo
+    //     key: 2048,//tamanho da chave
+    //     data: 'rsa',//nome do arquivo q contem a string a ser criptografada
     //     run: 3,//quantidade de vezes q sera executado a criptografia e o resultado sera a media
     // },
-    {
-        algorithm: 'rsa',//nome do algoritmo
-        key: 2048,//tamanho da chave
-        data: 'rsa',//nome do arquivo q contem a string a ser criptografada
-        run: 3,//quantidade de vezes q sera executado a criptografia e o resultado sera a media
-    },
     // {
     //     algorithm: 'aes',//nome do algoritmo
     //     key: 128,//tamanho da chave
     //     data: '50',//nome do arquivo q contem a string a ser criptografada
     //     run: 3,//quantidade de vezes q sera executado a criptografia e o resultado sera a media
     // },
-    // {
-    //     algorithm: 'aes',//nome do algoritmo
-    //     key: 128,//tamanho da chave
-    //     data: '500',//nome do arquivo q contem a string a ser criptografada
-    //     run: 3,//quantidade de vezes q sera executado a criptografia e o resultado sera a media
-    // },
+    {
+        algorithm: 'aes',//nome do algoritmo
+        key: 128,//tamanho da chave
+        data: 'rsa',//nome do arquivo q contem a string a ser criptografada
+        run: 1,//quantidade de vezes q sera executado a criptografia e o resultado sera a media
+    },
     // {
     //     algorithm: 'aes',//nome do algoritmo
     //     key: 128,//tamanho da chave
