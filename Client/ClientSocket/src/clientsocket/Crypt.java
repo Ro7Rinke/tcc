@@ -28,6 +28,7 @@ public class Crypt {
     private byte salt[];
     private SecretKey key;
     private SecretKeySpec keyBLOWFISH;
+    private SecretKeySpec keyDES;
     
     public void startKeys (String algorithm, int size) {
         switch(algorithm){
@@ -40,7 +41,7 @@ public class Crypt {
                 break;
             case "aes":
                 try {
-                    this.generateKeyAES(size, this.randomString(12));
+                    this.generateKeyAES(size);
                 } catch (NoSuchAlgorithmException ex) {
                     Logger.getLogger(Crypt.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -52,10 +53,17 @@ public class Crypt {
                     Logger.getLogger(Crypt.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
+            case "des":
+                try {
+                    this.generateKeyDES();
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(Crypt.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
         }
     }
     
-    public byte[] selectEncrypt (String algorithm, String data){
+    public byte[] selectEncrypt (String algorithm, String data) {
         byte[] result = null;
         switch(algorithm){
             case "rsa":
@@ -73,11 +81,18 @@ public class Crypt {
                 }
                 break;
             case "blowfish":
-            try {
-                result = this.encryptBLOWFISH(data);
-            } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
-                Logger.getLogger(Crypt.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                try {
+                    result = this.encryptBLOWFISH(data);
+                } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
+                    Logger.getLogger(Crypt.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            case "des":
+                try {
+                    result = this.encryptDES(data);
+                } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidAlgorithmParameterException | NoSuchProviderException ex) {
+                    Logger.getLogger(Crypt.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 break;
         }
         return result;
@@ -104,6 +119,13 @@ public class Crypt {
                 try {
                     result = this.decryptBLOWFISH(data);
                 } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
+                    Logger.getLogger(Crypt.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            case "des":
+                try {
+                    result = this.decryptDES(data);
+                } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | InvalidAlgorithmParameterException ex) {
                     Logger.getLogger(Crypt.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
@@ -149,7 +171,7 @@ public class Crypt {
         return new String(decriptCipher.doFinal(data));
     }
     
-    public void generateKeyAES(int size, String password) throws NoSuchAlgorithmException {
+    public void generateKeyAES(int size) throws NoSuchAlgorithmException {
         SecureRandom secRnd = SecureRandom.getInstanceStrong();
         this.salt = new byte[16];
         secRnd.nextBytes(salt);
@@ -170,6 +192,33 @@ public class Crypt {
         Cipher aes = Cipher.getInstance("AES/CBC/PKCS5Padding");
         aes.init(Cipher.DECRYPT_MODE, new SecretKeySpec(this.key.getEncoded(), "AES"), new IvParameterSpec(this.salt));
         return new String(aes.doFinal(data));
+    }
+    
+    public void generateKeyDES() throws NoSuchAlgorithmException{
+//        this.key = KeyGenerator.getInstance("DES").generateKey();
+        SecureRandom secRnd = SecureRandom.getInstanceStrong();
+        this.salt = new byte[8];
+        secRnd.nextBytes(salt);
+        
+        byte[] keyBytes = new byte[8];
+        secRnd.nextBytes(keyBytes);
+        this.keyDES = new SecretKeySpec(keyBytes, "DES");
+        
+//        KeyGenerator keyGen = KeyGenerator.getInstance("DES");
+//        keyGen.init(size);
+//        this.key = keyGen.generateKey();
+    }
+    
+    public byte[] encryptDES(String data) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException{
+        Cipher des = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        des.init(Cipher.ENCRYPT_MODE, this.keyDES, new IvParameterSpec(this.salt));
+        return des.doFinal(data.getBytes());
+    }
+    
+    public String decryptDES(byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException{
+        Cipher des = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        des.init(Cipher.DECRYPT_MODE, this.keyDES, new IvParameterSpec(this.salt));
+        return new String(des.doFinal(data));
     }
     
     public void generateKeyBLOWFISH(int size) throws NoSuchAlgorithmException{

@@ -22,8 +22,11 @@ public class SocketConnection {
  
   public static void main(String[] args) throws UnknownHostException, 
   IOException, ClassNotFoundException {
-      
-      
+    args = new String[4];
+//    args[0] = "500";
+//    args[1] = "rsa";
+//    args[2] = "1024";
+//    args[3] = "0";
       
     String data = WriteRead.Read("../strings/" + args[0] + ".dat");
       
@@ -53,6 +56,7 @@ public class SocketConnection {
                 long useMemoryCrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) - startUseMemory;
                 long usedTimeCrypt = (System.currentTimeMillis() - stTime);
                 String txt = crypt.selectDecrypt(args[1], cryptData);
+                System.out.println(txt);
                 long useMemoryDecrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) - startUseMemory;
                 long usedTimeDecrypt = (System.currentTimeMillis() - stTime);
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useTotalMemory-" + args[3] + ".dat", Long.toString( startUseMemory ));

@@ -1,0 +1,10 @@
+{
+    "params": [
+        {
+            "algorithm": "des",
+            "key": 56,
+            "data": 50,
+            "run": 3
+        }
+    ]
+}
