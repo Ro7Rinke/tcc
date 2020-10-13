@@ -3,7 +3,7 @@ const fs = require('fs')
 
 let config = {}
 
-config.params = [
+// config.params = [
     // {
     //     algorithm: 'rsa',//nome do algoritmo
     //     key: 1024,//tamanho da chave em bits
@@ -53,7 +53,7 @@ config.params = [
     //     run: 3,//quantidade de vezes q sera executado a criptografia e o resultado sera a media
     // },
     
-]
+// ]
 
 const algorithms = {
     des: {
@@ -98,6 +98,8 @@ const algorithms = {
         } 
     }
 }
+
+let resultFiles = ""
 
 let results = {
     cryptTime: null,
@@ -156,9 +158,9 @@ const verifyParams = () => {
     let validParams = []
 
     for(let i in config.params){
-        if(algorithms[config.parms[i].algorithm])
-            if(algorithms[config.parms[i].algorithm].verifyParam())
-                validParams.push(config.parms[i])
+        if(algorithms[config.params[i].algorithm])
+            if(algorithms[config.params[i].algorithm].verifyParam(config.params[i]))
+                validParams.push(config.params[i])
     }
 
     config.params = validParams
@@ -172,6 +174,7 @@ const main = () => {
 
     
     for(let paramIndex in config.params){
+        console.log(`Gerando resultados para ${config.params[paramIndex].data}-${config.params[paramIndex].algorithm}-${config.params[paramIndex].key}`)
         for(let i = 0; i < config.params[paramIndex].run; i++){
             execSync(`cd ./data && java -jar ../dist/ClientSocket.jar ${config.params[paramIndex].data} ${config.params[paramIndex].algorithm} ${config.params[paramIndex].key} ${i}`)
             ReadResults(i, config.params[paramIndex])
@@ -180,12 +183,17 @@ const main = () => {
         for(let i in results)
             results[i] = Math.round(results[i])
     
-        fs.writeFileSync(`./data/${config.params[paramIndex].data}-${config.params[paramIndex].algorithm}-${config.params[paramIndex].key}-results.dat`, JSON.stringify(results))
+        fs.writeFileSync(`./data/${config.params[paramIndex].data}-${config.params[paramIndex].algorithm}-${config.params[paramIndex].key}.dat`, JSON.stringify(results))
+        if(resultFiles != ""){
+            resultFiles += ','
+        }
+        resultFiles += `${config.params[paramIndex].data}-${config.params[paramIndex].algorithm}-${config.params[paramIndex].key}`
     }
+    console.log('Limpando arquivos temporários')
+    execSync('del "./data/singleresults" /f /q /s')
 
-    execSync('del "./data/" /f /q /s')
-
-    //generate graphic
+    console.log('Gerando gráficos')
+    execSync(`cd ./data && java -jar ../dist/ClientSocket.jar chart ${resultFiles}`)
 
 }
 

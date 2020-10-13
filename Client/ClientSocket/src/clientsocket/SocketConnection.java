@@ -5,49 +5,55 @@
  */
 package clientsocket;
 
+import com.google.gson.Gson;
+import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author Ro7Rinke
  */
 public class SocketConnection {
+
     private Socket socket = null;
- 
-  public static void main(String[] args) throws UnknownHostException, 
-  IOException, ClassNotFoundException {
-    args = new String[4];
-//    args[0] = "500";
-//    args[1] = "rsa";
+
+    public static void main(String[] args) throws UnknownHostException,
+            IOException, ClassNotFoundException {
+//        args = new String[2];
+//        args[0] = "chart";
+//        args[1] = "50-aes-128-results,500-aes-128-results,500-blowfish-128-results,500-blowfish-448-results,rsa-aes-128-results,rsa-des-56-results,rsa-rsa-1024-results";
 //    args[2] = "1024";
 //    args[3] = "0";
-      
-    String data = WriteRead.Read("../strings/" + args[0] + ".dat");
-      
-    // instancia classe
-    //SocketConnection client = new SocketConnection();
-    // conexão socket tcp
-    String ip = "192.168.0.35";
-    int port = 3000;
-    //client.socketConnect(ip, port);
- 
-    // escreve e recebe mensagem 
-    //String message = "mensagem123";
- 
-    //System.out.println("Enviando: " + message);
-    //String retorno = client.echo(message);
-    //System.out.println("Recebendo: " + retorno);
-    //client.socket.close();
-    long startUseMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
-    Crypt crypt = new Crypt();
-//    switch(args[1]){
-//        case "rsa":
+
+        if ("chart".equals(args[0])) {
+            generateCharts(args[1].split(","));
+        }else{
+            String data = WriteRead.Read("../strings/" + args[0] + ".dat");
+
+            // instancia classe
+            //SocketConnection client = new SocketConnection();
+            // conexão socket tcp
+            String ip = "192.168.0.35";
+            int port = 3000;
+            //client.socketConnect(ip, port);
+
+            // escreve e recebe mensagem 
+            //String message = "mensagem123";
+            //System.out.println("Enviando: " + message);
+            //String retorno = client.echo(message);
+            //System.out.println("Recebendo: " + retorno);
+            //client.socket.close();
+            long startUseMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+            Crypt crypt = new Crypt();
             try {
                 long stTime = System.currentTimeMillis();
                 crypt.startKeys(args[1], Integer.parseInt(args[2]));
@@ -59,8 +65,8 @@ public class SocketConnection {
                 System.out.println(txt);
                 long useMemoryDecrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) - startUseMemory;
                 long usedTimeDecrypt = (System.currentTimeMillis() - stTime);
-                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useTotalMemory-" + args[3] + ".dat", Long.toString( startUseMemory ));
-                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeKey-" + args[3] + ".dat", Long.toString( usedTimeKey ));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useTotalMemory-" + args[3] + ".dat", Long.toString(startUseMemory));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeKey-" + args[3] + ".dat", Long.toString(usedTimeKey));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-sizeCrypt-" + args[3] + ".dat", Integer.toString(cryptData.length));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useMemoryCrypt-" + args[3] + ".dat", Long.toString(useMemoryCrypt));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useMemoryDecrypt-" + args[3] + ".dat", Long.toString(useMemoryDecrypt));
@@ -69,37 +75,67 @@ public class SocketConnection {
             } catch (NumberFormatException ex) {
                 Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
-//            break;
-//    }
-  }
-  // realiza a conexão com o socket
-  private void socketConnect(String ip, int port) throws UnknownHostException, IOException {
-    System.out.println("[Conectando socket...]");
-    this.socket = new Socket(ip, port);
-  }           
-               
-  // escreve e recebe mensagem full no socket (String)
-  public String echo(String message) {
-    try {
-      // out & in 
-      PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
-      BufferedReader in = new BufferedReader
-      (new InputStreamReader(getSocket().getInputStream()));
- 
-      // escreve str no socket e lêr
-      out.println(message);
-      String retorno = in.readLine();
-      return retorno;
-                
-      } catch (IOException e) {
-      e.printStackTrace();
+        }
     }
-               
-    return null;    
-  }
- 
-  // obtem instância do socket
-  private Socket getSocket() {
-              return socket;
-  }
+
+    private static void generateCharts(String[] resultFiles) {
+        ArrayList<ChartType> chartTypes = new ArrayList<ChartType>();
+        chartTypes.add(new ChartType("cryptTime", "Tempo para criptografar", "cryptTime", "milisigundos"));
+        chartTypes.add(new ChartType("decryptTime", "Tempo para descriptografar", "decryptTime", "milisigundos"));
+        chartTypes.add(new ChartType("cryptSize", "Tamanho do dado criptografado", "cryptSize", "bytes"));
+        chartTypes.add(new ChartType("cryptMemory", "Memória usada para criptografar", "cryptMemory", "bytes"));
+        chartTypes.add(new ChartType("decryptMemory", "Memória usada para descriptografar", "decryptMemory", "bytes"));
+        chartTypes.add(new ChartType("keyTime", "Tempo para gerar a chave", "keyTime", "milisigundos"));
+
+        ArrayList<Result> results = new ArrayList<Result>();
+
+        Gson gson = new Gson();
+
+        for (String resultFile : resultFiles) {
+            Result result = gson.fromJson(WriteRead.Read("./" + resultFile + ".dat"), Result.class);
+            result.name = resultFile;
+            results.add(result);
+        }
+        
+        for( ChartType chartType : chartTypes){
+            EventQueue.invokeLater(() -> {
+
+            BarChartEx ex = new BarChartEx(chartType, results);
+            ex.setVisible(true);
+//            ex.dispose();
+            
+        });
+        }
+
+    }
+
+// realiza a conexão com o socket
+    private void socketConnect(String ip, int port) throws UnknownHostException, IOException {
+        System.out.println("[Conectando socket...]");
+        this.socket = new Socket(ip, port);
+    }
+
+    // escreve e recebe mensagem full no socket (String)
+    public String echo(String message) {
+        try {
+            // out & in 
+            PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
+
+            // escreve str no socket e lêr
+            out.println(message);
+            String retorno = in.readLine();
+            return retorno;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    // obtem instância do socket
+    private Socket getSocket() {
+        return socket;
+    }
 }
