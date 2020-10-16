@@ -104,6 +104,8 @@ let resultFiles = ""
 let results = {
     cryptTime: null,
     decryptTime: null,
+    sendCryptTime: null,
+    sendDecryptTime: null,
     cryptSize: null,
     cryptMemory: null,
     decryptMemory: null,
@@ -130,6 +132,18 @@ const ReadResults = (i, prm) => {
         results.decryptTime = parseInt(data)
     else
         results.decryptTime = (parseInt(data) + results.decryptTime) / 2
+
+    data = fs.readFileSync(`./data/singleresults/${prm.data}-${prm.algorithm}-${prm.key}-usedTimeSendCrypt-${i}.dat`)
+    if(results.sendCryptTime == null)
+        results.sendCryptTime = parseInt(data)
+    else
+        results.sendCryptTime = (parseInt(data) + results.sendCryptTime) / 2
+
+    data = fs.readFileSync(`./data/singleresults/${prm.data}-${prm.algorithm}-${prm.key}-usedTimeSendDecrypt-${i}.dat`)
+    if(results.sendDecryptTime == null)
+        results.sendDecryptTime = parseInt(data)
+    else
+        results.sendDecryptTime = (parseInt(data) + results.sendDecryptTime) / 2
 
     data = fs.readFileSync(`./data/singleresults/${prm.data}-${prm.algorithm}-${prm.key}-useMemoryCrypt-${i}.dat`)
     if(results.cryptMemory == null)

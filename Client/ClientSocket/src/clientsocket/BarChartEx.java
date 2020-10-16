@@ -65,7 +65,11 @@ public class BarChartEx extends JFrame {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         
         for(Result result : results){
-            dataset.setValue(result.getValue(chartType.alias), chartType.unit, result.name);
+            if("sendTime".equals(chartType.alias)){
+                dataset.setValue(result.getValue("sendCryptTime"), "Criptografado ("+chartType.unit+")", result.name);
+                dataset.setValue(result.getValue("sendDecryptTime"), "Descriptografado ("+chartType.unit+")", result.name);
+            }else
+                dataset.setValue(result.getValue(chartType.alias), chartType.unit, result.name);
         }
 //        dataset.setValue(11, "Gold medals", "Germany");
 

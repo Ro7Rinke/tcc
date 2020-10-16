@@ -40,11 +40,11 @@ public class SocketConnection {
             String data = WriteRead.Read("../strings/" + args[0] + ".dat");
 
             // instancia classe
-            //SocketConnection client = new SocketConnection();
+            SocketConnection client = new SocketConnection();
             // conexão socket tcp
             String ip = "192.168.0.35";
             int port = 3000;
-            //client.socketConnect(ip, port);
+//            client.socketConnect(ip, port);
 
             // escreve e recebe mensagem 
             //String message = "mensagem123";
@@ -55,14 +55,26 @@ public class SocketConnection {
             long startUseMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
             Crypt crypt = new Crypt();
             try {
+                client.socketConnect(ip, port);
                 long stTime = System.currentTimeMillis();
+                String retorno = client.echo(data);
+                long usedTimeSendDecrypt = (System.currentTimeMillis() - stTime);
+                client.socket.close();
+                stTime = System.currentTimeMillis();
                 crypt.startKeys(args[1], Integer.parseInt(args[2]));
                 long usedTimeKey = (System.currentTimeMillis() - stTime);
+                stTime = System.currentTimeMillis();
                 byte[] cryptData = crypt.selectEncrypt(args[1], data);
                 long useMemoryCrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) - startUseMemory;
                 long usedTimeCrypt = (System.currentTimeMillis() - stTime);
+                client.socketConnect(ip, port);
+                stTime = System.currentTimeMillis();
+                retorno = client.echo(new String(cryptData));
+                long usedTimeSendCrypt = (System.currentTimeMillis() - stTime);
+                client.socket.close();
+                stTime = System.currentTimeMillis();
                 String txt = crypt.selectDecrypt(args[1], cryptData);
-                System.out.println(txt);
+//                System.out.println(txt);
                 long useMemoryDecrypt = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) - startUseMemory;
                 long usedTimeDecrypt = (System.currentTimeMillis() - stTime);
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useTotalMemory-" + args[3] + ".dat", Long.toString(startUseMemory));
@@ -72,6 +84,8 @@ public class SocketConnection {
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-useMemoryDecrypt-" + args[3] + ".dat", Long.toString(useMemoryDecrypt));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeCrypt-" + args[3] + ".dat", Long.toString(usedTimeCrypt));
                 WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeDecrypt-" + args[3] + ".dat", Long.toString(usedTimeDecrypt));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeSendCrypt-" + args[3] + ".dat", Long.toString(usedTimeSendCrypt));
+                WriteRead.Write("./singleresults/" + args[0] + "-" + args[1] + "-" + args[2] + "-usedTimeSendDecrypt-" + args[3] + ".dat", Long.toString(usedTimeSendDecrypt));
             } catch (NumberFormatException ex) {
                 Logger.getLogger(SocketConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -86,6 +100,7 @@ public class SocketConnection {
         chartTypes.add(new ChartType("cryptMemory", "Memória usada para criptografar", "cryptMemory", "bytes"));
         chartTypes.add(new ChartType("decryptMemory", "Memória usada para descriptografar", "decryptMemory", "bytes"));
         chartTypes.add(new ChartType("keyTime", "Tempo para gerar a chave", "keyTime", "milisigundos"));
+        chartTypes.add(new ChartType("sendTime", "Tempo para enviar e receber a mensagem do servidor", "sendTime", "milisigundos"));
 
         ArrayList<Result> results = new ArrayList<Result>();
 

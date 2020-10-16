@@ -12,6 +12,8 @@ package clientsocket;
 public class Result {
     long cryptTime;
     long decryptTime;
+    long sendDecryptTime;
+    long sendCryptTime;
     long cryptSize;
     long cryptMemory;
     long decryptMemory;
@@ -20,7 +22,7 @@ public class Result {
 
     @Override
     public String toString() {
-        return "Result{" + "name=" + name + "cryptTime=" + cryptTime + ", decryptTime=" + decryptTime + ", cryptSize=" + cryptSize + ", cryptMemory=" + cryptMemory + ", decryptMemory=" + decryptMemory + ", keyTime=" + keyTime + '}';
+        return "Result{" + "cryptTime=" + cryptTime + ", decryptTime=" + decryptTime + ", sendDecryptTime=" + sendDecryptTime + ", sendCryptTime=" + sendCryptTime + ", cryptSize=" + cryptSize + ", cryptMemory=" + cryptMemory + ", decryptMemory=" + decryptMemory + ", keyTime=" + keyTime + ", name=" + name + '}';
     }
     
     public long getValue(String alias){
@@ -37,6 +39,10 @@ public class Result {
                 return decryptMemory;
             case "keyTime":
                 return keyTime;
+            case "sendCryptTime":
+                return sendCryptTime;
+            case "sendDecryptTime":
+                return sendDecryptTime;
             default:
                 return 0;
         }
