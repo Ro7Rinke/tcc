@@ -5,7 +5,8 @@ var PORT = 3000; // porta TCP LISTEN
   
 // Cria a instância do Server e aguarda uma conexão
 net.createServer(function(sock) {
-  
+    sock.setNoDelay(true)
+    // sock.setNoDelay(true)
     // console.log(`1`)
     // Opa, recebemos uma conexão - um objeto socket é associado à conexão automaticamente
     console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
@@ -16,13 +17,14 @@ net.createServer(function(sock) {
         // dados foram recebidos no socket 
         // Escreve a mensagem recebida de volta para o socket (echo)
         try{
-            console.log(`Mensagem recebida, retornando`)
+            console.log(`Mensagem recebida, retornando: ${data.length}`)
             sock.write(data);
-        }catch{
-            console.log('catch')
+        }catch(err){
+            console.log(`catch ${data.length}`)
+            console.log(err)
         }
         // console.log('4')
-    });
+    })
     // console.log('5')
   
     // Adiciona um 'close' - "event handler" nesta instância do socket

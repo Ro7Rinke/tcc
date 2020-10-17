@@ -28,11 +28,11 @@ public class SocketConnection {
 
     public static void main(String[] args) throws UnknownHostException,
             IOException, ClassNotFoundException {
-//        args = new String[2];
-//        args[0] = "chart";
-//        args[1] = "50-aes-128-results,500-aes-128-results,500-blowfish-128-results,500-blowfish-448-results,rsa-aes-128-results,rsa-des-56-results,rsa-rsa-1024-results";
-//    args[2] = "1024";
-//    args[3] = "0";
+//        args = new String[4];
+//        args[0] = "500000";
+//        args[1] = "aes";
+//        args[2] = "192";
+//        args[3] = "0";
 
         if ("chart".equals(args[0])) {
             generateCharts(args[1].split(","));
@@ -128,12 +128,17 @@ public class SocketConnection {
     private void socketConnect(String ip, int port) throws UnknownHostException, IOException {
         System.out.println("[Conectando socket...]");
         this.socket = new Socket(ip, port);
+//        this.socket.setTcpNoDelay(true);
+//        this.socket.setReceiveBufferSize(500000);
+//        this.socket.setSendBufferSize(500000);
     }
 
     // escreve e recebe mensagem full no socket (String)
     public String echo(String message) {
         try {
+//            getSocket().setTcpNoDelay(true);
             // out & in 
+            
             PrintWriter out = new PrintWriter(getSocket().getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
 

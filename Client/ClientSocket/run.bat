@@ -1,2 +1,2 @@
 node ./generateResults.js
-exit
+pause

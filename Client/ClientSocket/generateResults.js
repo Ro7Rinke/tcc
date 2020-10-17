@@ -168,13 +168,29 @@ const loadConfig = () => {
     config = JSON.parse(fs.readFileSync('./config.json'))
 }
 
+const randomChar = () => {
+    return 32 + Math.random() * (127 - 32)
+}
+
+const generateDataStrings = (size) => {
+    if(!fs.existsSync(`./strings/${size}.dat`)){
+        console.log(`Gerando mensagem de ${size} bytes`)
+        let str = ""
+        while(str.length < size)
+            str = str + String.fromCharCode(randomChar())
+        fs.writeFileSync(`./strings/${size}.dat`, str)
+    }
+}
+
 const verifyParams = () => {
     let validParams = []
 
     for(let i in config.params){
         if(algorithms[config.params[i].algorithm])
-            if(algorithms[config.params[i].algorithm].verifyParam(config.params[i]))
+            if(algorithms[config.params[i].algorithm].verifyParam(config.params[i])){
                 validParams.push(config.params[i])
+                generateDataStrings(config.params[i].data)
+            }
     }
 
     config.params = validParams
@@ -184,6 +200,16 @@ const main = () => {
 
     loadConfig()
 
+    // config.params = [
+    //     {
+    //         "algorithm": "aes",
+    //         "key": 192,
+    //         "data": 5000,
+    //         "run": 1
+    //     }
+    // ]
+
+    console.log('Verificando parametros')
     verifyParams()
 
     

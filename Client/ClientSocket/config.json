@@ -3,7 +3,7 @@
         {
             "algorithm": "des",
             "key": 56,
-            "data": 50,
+            "data": 500,
             "run": 3
         },
         {
@@ -21,37 +21,37 @@
         {
             "algorithm": "aes",
             "key": 128,
-            "data": 50,
+            "data": 500,
             "run": 3
         },
         {
             "algorithm": "aes",
             "key": 192,
-            "data": 50,
+            "data": 5000,
             "run": 3
         },
         {
             "algorithm": "aes",
             "key": 256,
-            "data": 50,
+            "data": 500,
             "run": 3
         },
         {
             "algorithm": "blowfish",
             "key": 32,
-            "data": 50,
+            "data": 500,
             "run": 3
         },
         {
             "algorithm": "blowfish",
             "key": 256,
-            "data": 50,
+            "data": 5000,
             "run": 3
         },
         {
             "algorithm": "blowfish",
             "key": 448,
-            "data": 50,
+            "data": 5000,
             "run": 3
         }
     ]
