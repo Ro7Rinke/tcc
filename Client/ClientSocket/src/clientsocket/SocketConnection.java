@@ -94,13 +94,13 @@ public class SocketConnection {
 
     private static void generateCharts(String[] resultFiles) {
         ArrayList<ChartType> chartTypes = new ArrayList<ChartType>();
-        chartTypes.add(new ChartType("cryptTime", "Tempo para criptografar", "cryptTime", "milisigundos"));
-        chartTypes.add(new ChartType("decryptTime", "Tempo para descriptografar", "decryptTime", "milisigundos"));
-        chartTypes.add(new ChartType("cryptSize", "Tamanho do dado criptografado", "cryptSize", "bytes"));
-        chartTypes.add(new ChartType("cryptMemory", "Memória usada para criptografar", "cryptMemory", "bytes"));
-        chartTypes.add(new ChartType("decryptMemory", "Memória usada para descriptografar", "decryptMemory", "bytes"));
-        chartTypes.add(new ChartType("keyTime", "Tempo para gerar a chave", "keyTime", "milisigundos"));
-        chartTypes.add(new ChartType("sendTime", "Tempo para enviar e receber a mensagem do servidor", "sendTime", "milisigundos"));
+        chartTypes.add(new ChartType("cryptTime", "Tempo para criptografar", "Tempo de criptografia", "milissegundos"));
+        chartTypes.add(new ChartType("decryptTime", "Tempo para descriptografar", "Tempo de descriptografia", "milissegundos"));
+        chartTypes.add(new ChartType("cryptSize", "Tamanho do dado criptografado", "Tamanho da mensagem criptografada", "bytes"));
+        chartTypes.add(new ChartType("cryptMemory", "Memória usada para criptografar", "Uso de memória para criptografar", "bytes"));
+        chartTypes.add(new ChartType("decryptMemory", "Memória usada para descriptografar", "Uso de memória para descriptografar", "bytes"));
+        chartTypes.add(new ChartType("keyTime", "Tempo para gerar a chave", "Tempo de gercação da chave", "milissegundos"));
+        chartTypes.add(new ChartType("sendTime", "Tempo para enviar e receber a mensagem do servidor", "Tempo de resposta", "milissegundos"));
 
         ArrayList<Result> results = new ArrayList<Result>();
 

@@ -3,56 +3,22 @@
         {
             "algorithm": "des",
             "key": 56,
-            "data": 500,
-            "run": 3
-        },
-        {
-            "algorithm": "rsa",
-            "key": 1024,
-            "data": 50,
-            "run": 3
+            "data": 50
         },
         {
             "algorithm": "rsa",
             "key": 2048,
-            "data": 50,
-            "run": 3
-        },
-        {
-            "algorithm": "aes",
-            "key": 128,
-            "data": 500,
-            "run": 3
-        },
-        {
-            "algorithm": "aes",
-            "key": 192,
-            "data": 5000,
-            "run": 3
-        },
-        {
-            "algorithm": "aes",
-            "key": 256,
-            "data": 500,
-            "run": 3
-        },
-        {
-            "algorithm": "blowfish",
-            "key": 32,
-            "data": 500,
-            "run": 3
-        },
-        {
-            "algorithm": "blowfish",
-            "key": 256,
-            "data": 5000,
-            "run": 3
+            "data": 50
         },
         {
             "algorithm": "blowfish",
             "key": 448,
-            "data": 5000,
-            "run": 3
+            "data": 50
+        },
+        {
+            "algorithm": "aes",
+            "key": 192,
+            "data": 50
         }
     ]
 }

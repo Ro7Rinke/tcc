@@ -190,6 +190,8 @@ const verifyParams = () => {
             if(algorithms[config.params[i].algorithm].verifyParam(config.params[i])){
                 validParams.push(config.params[i])
                 generateDataStrings(config.params[i].data)
+                if(config.params[i].run == undefined)
+                    config.params[i].run = 1
             }
     }
 
