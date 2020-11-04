@@ -116,8 +116,9 @@ const ReadResults = (i, prm) => {
     let data
     
     data = fs.readFileSync(`./data/singleresults/${prm.data}-${prm.algorithm}-${prm.key}-sizeCrypt-${i}.dat`)
+    console.log(`${prm.algorithm} - ${data}`)
     if(results.cryptSize == null)
-        results.cryptSize = (parseInt(data) + results.cryptSize) / 2
+        results.cryptSize = parseInt(data)
     else
         results.cryptSize = (parseInt(data) + results.cryptSize) / 2
 
@@ -217,13 +218,29 @@ const main = () => {
     
     for(let paramIndex in config.params){
         console.log(`Gerando resultados para ${config.params[paramIndex].data}-${config.params[paramIndex].algorithm}-${config.params[paramIndex].key}`)
+        
+        results = {
+            cryptTime: null,
+            decryptTime: null,
+            sendCryptTime: null,
+            sendDecryptTime: null,
+            cryptSize: null,
+            cryptMemory: null,
+            decryptMemory: null,
+            keyTime: null
+        }
+        
         for(let i = 0; i < config.params[paramIndex].run; i++){
             execSync(`cd ./data && java -jar ../dist/ClientSocket.jar ${config.params[paramIndex].data} ${config.params[paramIndex].algorithm} ${config.params[paramIndex].key} ${i}`)
             ReadResults(i, config.params[paramIndex])
         }
         
-        for(let i in results)
+        for(let i in results){
+            console.log(`ANTES: ${i} - ${results[i]}`)
             results[i] = Math.round(results[i])
+            console.log(`APOS: ${i} - ${results[i]}`)
+        }
+            
     
         fs.writeFileSync(`./data/${config.params[paramIndex].data}-${config.params[paramIndex].algorithm}-${config.params[paramIndex].key}.dat`, JSON.stringify(results))
         if(resultFiles != ""){
@@ -231,8 +248,8 @@ const main = () => {
         }
         resultFiles += `${config.params[paramIndex].data}-${config.params[paramIndex].algorithm}-${config.params[paramIndex].key}`
     }
-    console.log('Limpando arquivos temporários')
-    execSync('del "./data/singleresults" /f /q /s')
+    // console.log('Limpando arquivos temporários')
+    // execSync('del "./data/singleresults" /f /q /s')
 
     console.log('Gerando gráficos')
     execSync(`cd ./data && java -jar ../dist/ClientSocket.jar chart ${resultFiles}`)

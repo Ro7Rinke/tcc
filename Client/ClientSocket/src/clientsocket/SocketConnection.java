@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -99,7 +100,7 @@ public class SocketConnection {
         chartTypes.add(new ChartType("cryptSize", "Tamanho do dado criptografado", "Tamanho da mensagem criptografada", "bytes"));
         chartTypes.add(new ChartType("cryptMemory", "Memória usada para criptografar", "Uso de memória para criptografar", "bytes"));
         chartTypes.add(new ChartType("decryptMemory", "Memória usada para descriptografar", "Uso de memória para descriptografar", "bytes"));
-        chartTypes.add(new ChartType("keyTime", "Tempo para gerar a chave", "Tempo de gercação da chave", "milissegundos"));
+        chartTypes.add(new ChartType("keyTime", "Tempo para gerar a chave", "Tempo de geração da chave", "milissegundos"));
         chartTypes.add(new ChartType("sendTime", "Tempo para enviar e receber a mensagem do servidor", "Tempo de resposta", "milissegundos"));
 
         ArrayList<Result> results = new ArrayList<Result>();
