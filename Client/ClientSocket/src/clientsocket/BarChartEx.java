@@ -20,12 +20,14 @@ import org.jfree.chart.ChartUtilities;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import java.awt.Color;
+import java.awt.Font;
 //import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jfree.chart.plot.CategoryPlot;
 
 public class BarChartEx extends JFrame {
     private ChartType chartType;
@@ -42,13 +44,19 @@ public class BarChartEx extends JFrame {
         CategoryDataset dataset = createDataset();
 
         JFreeChart chart = createChart(dataset);
+        CategoryPlot plot = chart.getCategoryPlot();
+        Font font = new Font("Dialog", Font.PLAIN, 20);
+        plot.getDomainAxis().setLabelFont(font);
+        plot.getRangeAxis().setLabelFont(font);
+        plot.getDomainAxis().setTickLabelFont(font);
+        plot.getRangeAxis().setTickLabelFont(font);
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         chartPanel.setBackground(Color.white);
         add(chartPanel);
         
         try {
-            ChartUtilities.saveChartAsPNG(new File("./chart/" + chartType.title + ".png"), chart, 1366, 768);
+            ChartUtilities.saveChartAsPNG(new File("./chart/" + chartType.title + ".png"), chart, 800, 450);
         } catch (IOException ex) {
             Logger.getLogger(BarChartEx.class.getName()).log(Level.SEVERE, null, ex);
         }

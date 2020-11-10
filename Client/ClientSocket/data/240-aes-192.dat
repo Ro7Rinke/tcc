@@ -1,1 +1,1 @@
-{"cryptTime":70,"decryptTime":1,"sendCryptTime":2,"sendDecryptTime":2,"cryptSize":256,"cryptMemory":6713048,"decryptMemory":6713048,"keyTime":202}
+{"cryptTime":72,"decryptTime":0,"sendCryptTime":2,"sendDecryptTime":5,"cryptSize":256,"cryptMemory":5460168,"decryptMemory":5460168,"keyTime":334}
